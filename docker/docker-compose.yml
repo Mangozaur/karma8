@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  mysql:
+    image: mariadb:10.8
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+    volumes:
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    container_name: "${IMAGE_NAME}-mysql"
+    tty: true
+  app:
+    build: .
+    image: ${IMAGE_NAME}
+    container_name: "${IMAGE_NAME}-app"
+    ports:
+      - ":9000"
+    volumes:
+     - ../www:/local/www
+    user: www-data
+    tty: true
+    depends_on:
+      - mysql
+    links:
+      - mysql

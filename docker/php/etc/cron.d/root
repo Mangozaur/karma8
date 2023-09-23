@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+* * * * * www-data test -f /local/www/artisan && /usr/bin/php /local/www/artisan schedule:run >> /dev/null 2>&1
+* * * * * www-data test -f /local/www/cron.php && /usr/bin/php /local/www/cron.php >> /dev/null 2>&1
+# empty line
